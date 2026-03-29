@@ -1,0 +1,31 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<div class="container">
+
+<h2>🛠 Admin Panel</h2>
+
+<h3>📥 Pending Requests</h3>
+
+{% for p in pending %}
+<div class="card">
+    <p>{{ p.user.username }} → {{ p.book.title }}</p>
+
+    <a href="/approve/{{ p.id }}/"><button>Approve</button></a>
+    <a href="/reject/{{ p.id }}/"><button>Reject</button></a>
+</div>
+{% endfor %}
+
+
+<h3>✅ Approved Books</h3>
+
+{% for a in approved %}
+<div class="card">
+    <p>{{ a.user.username }} has {{ a.book.title }}</p>
+</div>
+{% endfor %}
+
+</div>
+<a href="/logout/" onclick="return confirm('Logout?')">
+    <button>Logout</button>
+</a>

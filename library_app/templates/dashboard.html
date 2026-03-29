@@ -1,0 +1,54 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<div class="container">
+
+<h2>📚 Available Books</h2>
+
+<form method="GET">
+    <input type="text" name="q" placeholder="Search books...">
+    <button type="submit">Search</button>
+</form>
+
+{% for book in books %}
+<div class="card">
+    <h3>{{ book.title }}</h3>
+    <p>👤 {{ book.author }}</p>
+    <p>💰 ₹{{ book.price }}</p>
+
+    <a href="/borrow/{{ book.id }}/">
+        <button>Borrow</button>
+    </a>
+</div>
+{% endfor %}
+
+
+<h2>📖 My Borrowed Books</h2>
+
+{% for b in borrowed %}
+<div class="card">
+    <h3>{{ b.book.title }}</h3>
+    <p>Due: {{ b.due_date }}</p>
+
+    <a href="/return/{{ b.id }}/">
+        <button>Return</button>
+    </a>
+</div>
+{% endfor %}
+
+
+<h2>📜 History</h2>
+
+{% for h in history %}
+<div class="card">
+    <h3>{{ h.book.title }}</h3>
+    <p>Status:
+        <span class="status-{{ h.status }}">
+            {{ h.status }}
+        </span>
+    </p>
+    <p>Borrowed: {{ h.borrow_date }}</p>
+</div>
+{% endfor %}
+
+</div>
