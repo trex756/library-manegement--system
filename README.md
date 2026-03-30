@@ -16,8 +16,6 @@ A Django-based web application for managing library operations.
 
 ## How to Run
 ```bash
-<<<<<<< HEAD
-python manage.py runserver
-=======
-python manage.py runserver
->>>>>>> e98eaeb (css updated)
+>cd library_project
+>python manage.py runserver
+
