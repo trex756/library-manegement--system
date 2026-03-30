@@ -1,0 +1,296 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-page {
+    height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Container */
+.login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.login-card {
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 16px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Title */
+.login-card h2 {
+    color: #38bdf8;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+/* Input Group */
+.input-group {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+/* Input */
+.input-group input {
+    width: 100%;
+    padding: 14px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    outline: none;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+/* Input Focus Fix */
+.input-group input:focus {
+    border: 1px solid #38bdf8;
+    background: #020617;
+}
+
+/* Placeholder fix */
+.input-group input::placeholder {
+    color: transparent;
+}
+
+/* Floating Label */
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 14px;
+    transition: 0.3s ease;
+    pointer-events: none;
+}
+
+/* Animation Fix */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 10px;
+    font-size: 11px;
+    color: #38bdf8;
+    background: #1e293b;
+    padding: 0 6px;
+    border-radius: 4px;
+}
+
+/* Button */
+.login-page button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Button Hover */
+.login-page button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Signup Text */
+.signup-text {
+    margin-top: 18px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.signup-text a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+body {
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Title */
+.dashboard h1 {
+    text-align: center;
+    color: #0f172a;
+    margin-bottom: 25px;
+}
+
+/* Search */
+.search-box {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    padding: 10px 12px;
+    width: 280px;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    outline: none;
+    transition: 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #6366f1;
+}
+
+.search-box button {
+    padding: 10px 18px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #4f46e5;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Text */
+.card h3 {
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.card p {
+    margin: 4px 0;
+    color: #64748b;
+}
+
+.price {
+    font-weight: bold;
+    color: #ef4444;
+}
+
+/* Buttons */
+.btn {
+    padding: 9px 16px;
+    background: #22c55e;
+    color: white;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: #16a34a;
+}
+
+/* Danger */
+.btn.danger {
+    background: #ef4444;
+}
+
+.btn.danger:hover {
+    background: #dc2626;
+}
+
+/* Logout */
+.btn.logout {
+    background: #64748b;
+}
+
+.btn.logout:hover {
+    background: #475569;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+/* Status */
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status.approved {
+    background: #dcfce7;
+    color: #166534;
+}

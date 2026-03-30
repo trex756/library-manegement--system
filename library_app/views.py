@@ -31,23 +31,26 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-from django.contrib.auth import authenticate, login
+from django.middleware.csrf import rotate_token
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
 
         if user:
             login(request, user)
 
-            #  ROLE-BASED REDIRECT
-            if user.is_staff:   # admin
+            rotate_token(request)   #
+
+            if user.is_staff:
                 return redirect('admin_dashboard')
             else:
                 return redirect('dashboard')
+
+        return render(request, 'login.html', {'error': 'Invalid credentials'})
 
     return render(request, 'login.html')
 
@@ -57,17 +60,8 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-# ================= LOGOUT================= #
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
-def user_logout(request):
-    logout(request)
-    return redirect('login')   # 👈 goes back to login page
 
 # ================= USER DASHBOARD ================= #
-
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def dashboard(request):
@@ -80,15 +74,16 @@ def dashboard(request):
         'borrowed': borrowed,
         'history': history
     })
+
+
 # ================= BORROW ================= #
 
 @login_required
 def borrow_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
-    # Prevent duplicate requests
-    existing = Borrow.objects.filter(user=request.user, book=book, status='pending')
-    if existing.exists():
+    # prevent duplicate request
+    if Borrow.objects.filter(user=request.user, book=book, status='pending').exists():
         return redirect('dashboard')
 
     Borrow.objects.create(
@@ -103,7 +98,7 @@ def borrow_book(request, book_id):
 
 # ================= ADMIN ================= #
 
-@user_passes_test(is_admin)
+@user_passes_test(is_admin, login_url='login')
 def admin_dashboard(request):
     pending = Borrow.objects.filter(status='pending')
     approved = Borrow.objects.filter(status='approved')
@@ -115,28 +110,38 @@ def admin_dashboard(request):
         'rejected': rejected
     })
 
-@user_passes_test(is_admin)
+
+@user_passes_test(is_admin, login_url='login')
 def approve_borrow(request, borrow_id):
     borrow = get_object_or_404(Borrow, id=borrow_id)
+
+    # prevent double action
+    if borrow.status != 'pending':
+        return redirect('admin_dashboard')
 
     if borrow.book.available_copies > 0:
         borrow.status = 'approved'
         borrow.book.available_copies -= 1
         borrow.book.save()
     else:
-        borrow.status = 'rejected'   # 🔥 auto reject if no stock
+        borrow.status = 'rejected'
 
     borrow.save()
     return redirect('admin_dashboard')
 
-@user_passes_test(is_admin)
+
+@user_passes_test(is_admin, login_url='login')
 def reject_borrow(request, borrow_id):
     borrow = get_object_or_404(Borrow, id=borrow_id)
+
+    if borrow.status != 'pending':
+        return redirect('admin_dashboard')
 
     borrow.status = 'rejected'
     borrow.save()
 
     return redirect('admin_dashboard')
+
 
 # ================= RETURN ================= #
 
@@ -144,22 +149,20 @@ def reject_borrow(request, borrow_id):
 def return_book(request, borrow_id):
     borrow = get_object_or_404(Borrow, id=borrow_id)
 
-    # Prevent invalid return
     if borrow.status != 'approved':
         return redirect('dashboard')
 
     borrow.status = 'returned'
     borrow.return_date = date.today()
 
-    # Fine calculation
     days_late = (borrow.return_date - borrow.due_date).days
     fine = days_late * 10 if days_late > 0 else 0
 
-    # Save fine (make sure field exists in model)
+    # ⚠️ make sure model has this field OR remove this line
     borrow.fine = fine
+
     borrow.save()
 
-    # Update book stock
     book = borrow.book
     book.available_copies += 1
     book.save()

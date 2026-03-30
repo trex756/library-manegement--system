@@ -1,54 +1,65 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 
-<div class="container">
+<div class="dashboard">
 
-<h2>📚 Available Books</h2>
+    <h1>📚 Library Dashboard</h1>
 
-<form method="GET">
-    <input type="text" name="q" placeholder="Search books...">
-    <button type="submit">Search</button>
-</form>
+    <!-- Search -->
+    <div class="search-box">
+        <form method="GET">
+            <input type="text" name="q" placeholder="Search books...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
-{% for book in books %}
-<div class="card">
-    <h3>{{ book.title }}</h3>
-    <p>👤 {{ book.author }}</p>
-    <p>💰 ₹{{ book.price }}</p>
+    <!-- Available Books -->
+    <h2>📚 Available Books</h2>
+    <div class="grid">
+        {% for book in books %}
+        <div class="card">
+            <h3>{{ book.title }}</h3>
+            <p>👤 {{ book.author }}</p>
+            <p class="price">₹{{ book.price }}</p>
 
-    <a href="/borrow/{{ book.id }}/">
-        <button>Borrow</button>
-    </a>
-</div>
-{% endfor %}
+            <a href="/borrow/{{ book.id }}/">
+                <button class="btn">Borrow</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 
+    <!-- Borrowed -->
+    <h2>📖 My Borrowed Books</h2>
+    <div class="grid">
+        {% for b in borrowed %}
+        <div class="card">
+            <h3>{{ b.book.title }}</h3>
+            <p>Due: {{ b.due_date }}</p>
 
-<h2>📖 My Borrowed Books</h2>
+            <a href="/return/{{ b.id }}/">
+                <button class="btn danger">Return</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 
-{% for b in borrowed %}
-<div class="card">
-    <h3>{{ b.book.title }}</h3>
-    <p>Due: {{ b.due_date }}</p>
+    <!-- History -->
+    <h2>📜 History</h2>
+    <div class="grid">
+        {% for h in history %}
+        <div class="card">
+            <h3>{{ h.book.title }}</h3>
 
-    <a href="/return/{{ b.id }}/">
-        <button>Return</button>
-    </a>
-</div>
-{% endfor %}
+            <p>Status:
+                <span class="status {{ h.status }}">
+                    {{ h.status }}
+                </span>
+            </p>
 
-
-<h2>📜 History</h2>
-
-{% for h in history %}
-<div class="card">
-    <h3>{{ h.book.title }}</h3>
-    <p>Status:
-        <span class="status-{{ h.status }}">
-            {{ h.status }}
-        </span>
-    </p>
-    <p>Borrowed: {{ h.borrow_date }}</p>
-</div>
-{% endfor %}
+            <p>Borrowed: {{ h.borrow_date }}</p>
+        </div>
+        {% endfor %}
+    </div>
 
 </div>

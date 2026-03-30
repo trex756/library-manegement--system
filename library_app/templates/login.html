@@ -1,18 +1,41 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="login-page">
 
-<div class="container">
+<div class="login-container">
 
-<h2>🔐 Login</h2>
+    <div class="login-card">
+        <h2>🔐 Welcome Back</h2>
+        <p class="subtitle">Login to continue</p>
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username"><br><br>
-    <input type="password" name="password" placeholder="Password"><br><br>
+        <form method="POST" action="">
+            {% csrf_token %}
 
-    <button type="submit">Login</button>
-</form>
+            <div class="input-group">
+                <input type="text" name="username" required>
+                <label>Username</label>
+            </div>
 
-<p>New user? <a href="/signup/">Signup</a></p>
+            <div class="input-group">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="signup-text">
+            New user? <a href="/signup/">Create Account</a>
+        </p>
+    </div>
 
 </div>
+
+</body>
+</html>
